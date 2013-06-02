@@ -71,7 +71,7 @@ The values for parity are 0 (meaning no parity), PARENB|PARODD (enable parity an
    included by <termios.h> */
 #define BAUDRATE B115200            
 /* change this definition for the correct port */
-#define MODEMDEVICE "/dev/ttyS1"
+#define MODEMDEVICE "/dev/ttyUSB2"
 #define _POSIX_SOURCE 1 /* POSIX compliant source */
 
 #define FALSE 0

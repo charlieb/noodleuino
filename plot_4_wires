@@ -1,0 +1,1 @@
+plot "read_serial/out_proc" using 1 with lines, "read_serial/out_proc" using 2 with lines, "read_serial/out_proc" using 3 with lines, "read_serial/out_proc" using 4 with lines
