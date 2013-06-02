@@ -1,36 +1,37 @@
 
 // create an instance of the stepper class, specifying
-// the number of steps of the motor and the pins it's
+// the number of steps of the motor and the vars it's
 // attached to
 //--Stepper stepper(STEPS, 8, 10, 9, 11);
 
+int var1, var2, var3, var4;
 
 void wave_drive(int phase) 
 {
   switch(phase % 4) {
     case 0:
-      digitalWrite(pin1, HIGH);
-      digitalWrite(pin2, LOW);
-      digitalWrite(pin3, LOW);
-      digitalWrite(pin4, LOW);
+      digitalWrite(var1, HIGH);
+      digitalWrite(var2, LOW);
+      digitalWrite(var3, LOW);
+      digitalWrite(var4, LOW);
       break;
     case 1:
-      digitalWrite(pin1, LOW);
-      digitalWrite(pin2, HIGH);
-      digitalWrite(pin3, LOW);
-      digitalWrite(pin4, LOW);
+      digitalWrite(var1, LOW);
+      digitalWrite(var2, HIGH);
+      digitalWrite(var3, LOW);
+      digitalWrite(var4, LOW);
       break;
     case 2:
-      digitalWrite(pin1, LOW);
-      digitalWrite(pin2, LOW);
-      digitalWrite(pin3, HIGH);
-      digitalWrite(pin4, LOW);
+      digitalWrite(var1, LOW);
+      digitalWrite(var2, LOW);
+      digitalWrite(var3, HIGH);
+      digitalWrite(var4, LOW);
       break;
     case 3:
-      digitalWrite(pin1, LOW);
-      digitalWrite(pin2, LOW);
-      digitalWrite(pin3, LOW);
-      digitalWrite(pin4, HIGH);
+      digitalWrite(var1, LOW);
+      digitalWrite(var2, LOW);
+      digitalWrite(var3, LOW);
+      digitalWrite(var4, HIGH);
       break;
   }
 }
@@ -38,41 +39,47 @@ void step_drive(int phase)
 {
   switch(phase % 4) {
     case 0:
-      digitalWrite(pin1, HIGH);
-      digitalWrite(pin2, LOW);
-      digitalWrite(pin3, LOW);
-      digitalWrite(pin3, HIGH);
+      digitalWrite(var1, HIGH);
+      digitalWrite(var2, LOW);
+      digitalWrite(var3, LOW);
+      digitalWrite(var3, HIGH);
       break;
     case 1:
-      digitalWrite(pin1, HIGH);
-      digitalWrite(pin2, HIGH);
-      digitalWrite(pin3, LOW);
-      digitalWrite(pin4, LOW);
+      digitalWrite(var1, HIGH);
+      digitalWrite(var2, HIGH);
+      digitalWrite(var3, LOW);
+      digitalWrite(var4, LOW);
       break;
     case 2:
-      digitalWrite(pin1, LOW);
-      digitalWrite(pin2, HIGH);
-      digitalWrite(pin3, HIGH);
-      digitalWrite(pin4, LOW);
+      digitalWrite(var1, LOW);
+      digitalWrite(var2, HIGH);
+      digitalWrite(var3, HIGH);
+      digitalWrite(var4, LOW);
       break;
     case 3:
-      digitalWrite(pin1, LOW);
-      digitalWrite(pin2, LOW);
-      digitalWrite(pin3, HIGH);
-      digitalWrite(pin4, HIGH);
+      digitalWrite(var1, LOW);
+      digitalWrite(var2, LOW);
+      digitalWrite(var3, HIGH);
+      digitalWrite(var4, HIGH);
       break;
   }
 }
 
-void setup()
-{
-  Serial.begin(9600);
-}
 
 int last_read = LOW;
 int stepping = 0;
 int phase = 0;
 int pin1, pin2, pin3, pin4;
+int out1, out2, out3, out4;
+
+void setup()
+{
+  Serial.begin(9600);
+  out1 = pin1 = var1 = 8;
+  out2 = pin2 = var2 = 10;
+  out3 = pin3 = var3 = 9;
+  out4 = pin4 = var4 = 11;
+}
 
 void loop()
 {
@@ -93,19 +100,25 @@ void loop()
    // Look at dip switches to determine which stepper 
    // settings to use
     if(digitalRead(2)) {
-      pin1 = 8; pin2 = 10;
+      out1 = pin1; out2 = pin2;
     } else {
-      pin1 = 10; pin2 = 8;
+      out1 = pin2; out2 = pin1;
     }
     if(digitalRead(3)) {
-      pin3 = 9; pin4 = 11;
+      out3 = pin3; out4 = pin4;
     } else {
-      pin3 = 11; pin4 = 9;
+      out3 = pin4; out4 = pin3;
     }
     if(digitalRead(4)) {
-      stepper = Stepper(STEPS, pin1, pin2, pin3, pin4);
+      var1 = out1;
+      var2 = out2;
+      var3 = out3;
+      var4 = out4;
     } else {
-      stepper = Stepper(STEPS, pin3, pin4, pin1, pin2);
+      var1 = out3;
+      var2 = out4;
+      var3 = out1;
+      var4 = out2;
     }
 
     if(digitalRead(5)) {
