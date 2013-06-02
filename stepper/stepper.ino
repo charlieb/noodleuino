@@ -1,41 +1,78 @@
-/*
- * MotorKnob
- *
- * A stepper motor follows the turns of a potentiometer
- * (or other sensor) on analog input 0.
- *
- * http://www.arduino.cc/en/Reference/Stepper
- * This example code is in the public domain.
- */
-
-#include <Stepper.h>
-
-// change this to the number of steps on your motor
-#define STEPS 48
 
 // create an instance of the stepper class, specifying
 // the number of steps of the motor and the pins it's
 // attached to
 //--Stepper stepper(STEPS, 8, 10, 9, 11);
-Stepper stepper(STEPS, 8, 10, 9, 11);
-/*
-Stepper stepper2(STEPS, 8, 10, 11, 9);
-Stepper stepper3(STEPS, 10, 8, 11, 9);
-Stepper stepper3(STEPS, 10, 8, 9, 11);
-Stepper stepper = stepper1;
-*/
-//--Stepper stepper(STEPS, 8, 10, 9, 11);
-//Stepper stepper(STEPS, 8, 10, 9, 11);
+
+
+void wave_drive(int phase) 
+{
+  switch(phase % 4) {
+    case 0:
+      digitalWrite(pin1, HIGH);
+      digitalWrite(pin2, LOW);
+      digitalWrite(pin3, LOW);
+      digitalWrite(pin4, LOW);
+      break;
+    case 1:
+      digitalWrite(pin1, LOW);
+      digitalWrite(pin2, HIGH);
+      digitalWrite(pin3, LOW);
+      digitalWrite(pin4, LOW);
+      break;
+    case 2:
+      digitalWrite(pin1, LOW);
+      digitalWrite(pin2, LOW);
+      digitalWrite(pin3, HIGH);
+      digitalWrite(pin4, LOW);
+      break;
+    case 3:
+      digitalWrite(pin1, LOW);
+      digitalWrite(pin2, LOW);
+      digitalWrite(pin3, LOW);
+      digitalWrite(pin4, HIGH);
+      break;
+  }
+}
+void step_drive(int phase)
+{
+  switch(phase % 4) {
+    case 0:
+      digitalWrite(pin1, HIGH);
+      digitalWrite(pin2, LOW);
+      digitalWrite(pin3, LOW);
+      digitalWrite(pin3, HIGH);
+      break;
+    case 1:
+      digitalWrite(pin1, HIGH);
+      digitalWrite(pin2, HIGH);
+      digitalWrite(pin3, LOW);
+      digitalWrite(pin4, LOW);
+      break;
+    case 2:
+      digitalWrite(pin1, LOW);
+      digitalWrite(pin2, HIGH);
+      digitalWrite(pin3, HIGH);
+      digitalWrite(pin4, LOW);
+      break;
+    case 3:
+      digitalWrite(pin1, LOW);
+      digitalWrite(pin2, LOW);
+      digitalWrite(pin3, HIGH);
+      digitalWrite(pin4, HIGH);
+      break;
+  }
+}
 
 void setup()
 {
-  // set the speed of the motor to 30 RPMs
-
   Serial.begin(9600);
 }
 
 int last_read = LOW;
 int stepping = 0;
+int phase = 0;
+int pin1, pin2, pin3, pin4;
 
 void loop()
 {
@@ -55,7 +92,6 @@ void loop()
   if(stepping) {
    // Look at dip switches to determine which stepper 
    // settings to use
-    int pin1, pin2, pin3, pin4;
     if(digitalRead(2)) {
       pin1 = 8; pin2 = 10;
     } else {
@@ -71,7 +107,12 @@ void loop()
     } else {
       stepper = Stepper(STEPS, pin3, pin4, pin1, pin2);
     }
-    stepper.setSpeed(120);    
-    stepper.step(48);
+
+    if(digitalRead(5)) {
+      wave_drive(phase);
+    } else {
+      step_drive(phase);
+    }
+    phase++;
   }
 }
