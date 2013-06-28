@@ -1,6 +1,6 @@
 void setup() {
   // initialize the serial port:
-  Serial.begin(28800);
+  Serial.begin(115200);
 }
 
 void loop() {
@@ -14,9 +14,12 @@ void loop() {
  line3 = analogRead(10);
  line4 = analogRead(11); 
  
- Serial.println(line1);
- Serial.println(line2);
- Serial.println(line3);
- Serial.println(line4);
- Serial.println("----");
+ Serial.print(line1);
+  Serial.print(" ");
+ Serial.print(line2);
+  Serial.print(" ");
+ Serial.print(line3);
+   Serial.print(" ");
+ Serial.print(line4);
+   Serial.print("\n");
 }
