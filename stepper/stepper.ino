@@ -45,31 +45,31 @@ void step_drive(int phase)
   switch(phase % 4) {
     case 0:
       //Serial.println("0");
-      digitalWrite(var1, LOW);
-      digitalWrite(var2, HIGH);
+      digitalWrite(var1, HIGH);
+      digitalWrite(var2, LOW);
       digitalWrite(var3, HIGH);
       digitalWrite(var4, LOW);
       break;
     case 1:
       //Serial.println("1");
       digitalWrite(var1, LOW);
-      digitalWrite(var2, LOW);
+      digitalWrite(var2, HIGH);
       digitalWrite(var3, HIGH);
-      digitalWrite(var4, HIGH);
+      digitalWrite(var4, LOW);
       break;
     case 2:
       //Serial.println("2");
-      digitalWrite(var1, HIGH);
-      digitalWrite(var2, LOW);
+      digitalWrite(var1, LOW);
+      digitalWrite(var2, HIGH);
       digitalWrite(var3, LOW);
       digitalWrite(var4, HIGH);
       break;
     case 3:
       //Serial.println("3");    
       digitalWrite(var1, HIGH);
-      digitalWrite(var2, HIGH);
+      digitalWrite(var2, LOW);
       digitalWrite(var3, LOW);
-      digitalWrite(var4, LOW);
+      digitalWrite(var4, HIGH);
       break;
   }
 }
