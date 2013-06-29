@@ -44,28 +44,28 @@ void step_drive(int phase)
 {
   switch(phase % 4) {
     case 0:
-      Serial.println("0");
+      //Serial.println("0");
       digitalWrite(var1, LOW);
       digitalWrite(var2, HIGH);
       digitalWrite(var3, HIGH);
       digitalWrite(var4, LOW);
       break;
     case 1:
-      Serial.println("1");
+      //Serial.println("1");
       digitalWrite(var1, LOW);
       digitalWrite(var2, LOW);
       digitalWrite(var3, HIGH);
       digitalWrite(var4, HIGH);
       break;
     case 2:
-      Serial.println("2");
+      //Serial.println("2");
       digitalWrite(var1, HIGH);
       digitalWrite(var2, LOW);
       digitalWrite(var3, LOW);
       digitalWrite(var4, HIGH);
       break;
     case 3:
-      Serial.println("3");    
+      //Serial.println("3");    
       digitalWrite(var1, HIGH);
       digitalWrite(var2, HIGH);
       digitalWrite(var3, LOW);
@@ -80,6 +80,8 @@ int stepping = 0;
 int phase = 0;
 int pin1, pin2, pin3, pin4;
 int out1, out2, out3, out4;
+
+int combo = 0;
 
 void setup()
 {
@@ -111,30 +113,38 @@ void loop()
   last_read = tmp_read;
   
   if(stepping) {
-  /*
-    // Look at dip switches to determine which stepper 
-   // settings to use
-    if(!digitalRead(2)) {
-      out1 = pin1; out2 = pin2;
-    } else {
-      out1 = pin2; out2 = pin1;
+    if(phase % 100 == 0) {
+      if(combo % 2 == 0) {
+        out1 = pin1; out2 = pin2;
+      } else {
+        out1 = pin2; out2 = pin1;
+      }
+      if(combo % 4 ==0) {
+        out3 = pin3; out4 = pin4;
+      } else {
+        out3 = pin4; out4 = pin3;
+      }
+      if(combo % 8 == 0) {
+        var1 = out1;
+        var2 = out2;
+        var3 = out3;
+        var4 = out4;
+      } else {
+        var1 = out1;
+        var2 = out3;
+        var3 = out4;
+        var4 = out2;
+      }
+      Serial.print(var1);
+      Serial.print(" ");
+      Serial.print(var2);
+      Serial.print(" ");
+      Serial.print(var3);
+      Serial.print(" ");
+      Serial.println(var4);
     }
-    if(!digitalRead(3)) {
-      out3 = pin3; out4 = pin4;
-    } else {
-      out3 = pin4; out4 = pin3;
-    }
-    if(!digitalRead(4)) {
-      var1 = out1;
-      var2 = out2;
-      var3 = out3;
-      var4 = out4;
-    } else {
-      var1 = out1;
-      var2 = out3;
-      var3 = out4;
-      var4 = out2;
-    }
+
+    /*
 
     if(!digitalRead(5)) {
       wave_drive(phase);
